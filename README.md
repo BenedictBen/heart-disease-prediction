@@ -7,4 +7,5 @@
 4. Open http://localhost:8501
 
 ## Note:
-Final Project Submission for CLoud Computing.
+Final Project Submission for Cloud Computing.
+Link : https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app

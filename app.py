@@ -41,4 +41,4 @@ if st.button("Predict"):
 
 st.write("---")
 st.write("Final Project Submission.")
-st.write('Link': 'https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/')
+
