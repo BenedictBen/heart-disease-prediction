@@ -1,0 +1,15 @@
+Model,Accuracy
+Naive_Bayes,0.7
+SVM,0.65
+SVM_RBF,0.65
+KNN,0.6
+KNN_7,0.6
+Logistic_Regression,0.55
+Logistic_L1,0.55
+Logistic_L2,0.55
+SVM_Linear,0.55
+KNN_3,0.55
+Random_Forest,0.5
+Decision_Tree,0.5
+Random_Forest_200,0.5
+Decision_Tree_Deep,0.45
