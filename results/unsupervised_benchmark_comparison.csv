@@ -1,0 +1,4 @@
+Clustering Algorithm,Estimated Clusters,Silhouette Score,Davies-Bouldin Index,Calinski-Harabasz Index,Adjusted Rand Index (vs Truth)
+KMeans_Clustering,2,0.1759,2.0919,62.4521,0.4293
+Hierarchical_Clustering,2,0.1293,2.5925,42.9928,0.1785
+DBSCAN_Clustering,1,-1.0,-1.0,-1.0,0.0

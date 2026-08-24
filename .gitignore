@@ -1,0 +1,21 @@
+# Virtual Environment
+.venv/
+env/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# CatBoost training logs
+catboost_info/
+
+# Temporary Microsoft Word lock files
+~$*.docx
+~$*.doc
+
+# OS files
+.DS_Store
+Thumbs.db
