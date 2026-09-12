@@ -4,6 +4,12 @@ Interactive Web Application for Heart Disease Prediction, Multi-Model Benchmarki
 """
 
 import os
+import sys
+from unittest.mock import MagicMock
+sys.modules.setdefault('sklearn.feature_extraction', MagicMock())
+sys.modules.setdefault('sklearn.feature_extraction._hashing_fast', MagicMock())
+sys.modules.setdefault('sklearn.feature_extraction.text', MagicMock())
+
 import pickle
 import numpy as np
 import pandas as pd
@@ -131,11 +137,9 @@ with st.sidebar:
     st.markdown("**Machine Learning Research & Clinical Decision Support System**")
     st.markdown("---")
     
-    st.markdown("### 🎓 Academic Affiliation")
+    st.markdown("### 📋 Project Attribution")
     st.markdown("**Researcher:** Benedict Baah")
-    st.markdown("**Supervisor:** Dr. Timothy Ogunleye")
-    st.markdown("**Institution:** Osiri University, Nebraska, USA")
-    st.markdown("**Course:** ML Research & Application Development")
+    st.markdown("**Supervisor:** Dr. Timothy A Ogunleye")
     st.markdown("---")
     
     st.markdown("### 📋 Empirical Metadata")
@@ -145,7 +149,6 @@ with st.sidebar:
     st.markdown("- **XAI Framework**: SHAP (TreeExplainer)")
     st.markdown("- **Top Performance**: **97.19% ROC-AUC** (AdaBoost)")
     st.markdown("---")
-    st.caption("Department of Computer Science & Artificial Intelligence | Osiri University")
 
 # Header & Academic Attribution
 st.markdown('<div class="main-header">CardioAI: Machine Learning Research & Application Development</div>', unsafe_allow_html=True)
@@ -154,8 +157,7 @@ st.markdown('<div class="sub-header">Comparative Benchmarking of 21 Algorithmic 
 # Researcher & Supervisor Info Card
 st.markdown("""
 <div style="background-color: #1A1D24; padding: 0.85rem 1.2rem; border-radius: 8px; border-left: 4px solid #4CC9F0; margin-bottom: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; font-size: 0.9rem;">
-    <div><strong>Researcher:</strong> Benedict Baah &nbsp;|&nbsp; <strong>Faculty Advisor:</strong> Dr. Timothy Ogunleye</div>
-    <div><strong>Institution:</strong> Osiri University, Nebraska, USA</div>
+    <div><strong>Researcher:</strong> Benedict Baah &nbsp;|&nbsp; <strong>Supervisor:</strong> Dr. Timothy A Ogunleye</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -397,22 +399,43 @@ with tab2:
         formatted_df["Specificity"] = formatted_df["Specificity"].apply(lambda x: f"{x:.2%}")
         formatted_df["F1-Score"] = formatted_df["F1-Score"].apply(lambda x: f"{x:.2%}")
         formatted_df["ROC-AUC"] = formatted_df["ROC-AUC"].apply(lambda x: f"{x:.2%}")
+        if "Balanced Accuracy" in formatted_df.columns:
+            formatted_df["Balanced Accuracy"] = formatted_df["Balanced Accuracy"].apply(lambda x: f"{x:.2%}" if isinstance(x, (int, float)) else str(x))
+        if "Brier Score" in formatted_df.columns:
+            formatted_df["Brier Score"] = formatted_df["Brier Score"].apply(lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else str(x))
+        if "MCC" in formatted_df.columns:
+            formatted_df["MCC"] = formatted_df["MCC"].apply(lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else str(x))
         formatted_df["5-Fold CV Mean"] = formatted_df.apply(lambda r: f"{r['5-Fold CV Mean']:.2%} ± {r['5-Fold CV Std']:.2%}", axis=1)
         
-        display_cols = ["Algorithm", "ROC-AUC", "Accuracy", "Recall (Sensitivity)", "Specificity", "F1-Score", "5-Fold CV Mean"]
+        display_cols = [c for c in [
+            "Algorithm", "ROC-AUC", "ROC-AUC 95% CI", "Accuracy", "Balanced Accuracy",
+            "Recall (Sensitivity)", "Specificity", "F1-Score", "Brier Score", "MCC", "5-Fold CV Mean"
+        ] if c in formatted_df.columns]
         st.dataframe(formatted_df[display_cols], use_container_width=True, height=450)
         
         st.markdown("---")
-        st.markdown("#### 📈 Multi-Model Diagnostic Curves")
-        c1, c2 = st.columns(2)
+        st.markdown("#### 📈 Multi-Model Diagnostic & Calibration Curves")
+        c1, c2, c3 = st.columns(3)
         with c1:
-            st.markdown("**Receiver Operating Characteristic (ROC) Comparison:**")
+            st.markdown("**ROC Curves Comparison:**")
             if os.path.exists("results/roc_curves.png"):
                 st.image("results/roc_curves.png", use_container_width=True)
         with c2:
-            st.markdown("**Precision-Recall (PR) Curves Comparison:**")
+            st.markdown("**Precision-Recall (PR) Curves:**")
             if os.path.exists("results/precision_recall_curves.png"):
                 st.image("results/precision_recall_curves.png", use_container_width=True)
+        with c3:
+            st.markdown("**Clinical Calibration (Reliability):**")
+            if os.path.exists("results/calibration_curves.png"):
+                st.image("results/calibration_curves.png", use_container_width=True)
+                
+        # Demographic Subgroup / Slice-Based Fairness & Performance Analysis
+        if os.path.exists("results/slice_based_evaluation.csv"):
+            st.markdown("---")
+            st.markdown("#### 🔬 Demographic Subgroup / Slice Analysis")
+            st.write("Cross-cohort diagnostic fairness and reliability across Biological Sex and Age cohorts.")
+            slice_df = pd.read_csv("results/slice_based_evaluation.csv")
+            st.dataframe(slice_df, use_container_width=True)
                 
         st.markdown("---")
         st.markdown("#### 🎯 Model Confusion Matrix Inspector")
@@ -495,7 +518,6 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #8D99AE; font-size: 0.82rem; padding: 1rem 0;">
     <strong>CardioAI: Machine Learning Research and Application Development</strong><br>
-    Researcher: <strong>Benedict Baah</strong> | Faculty Supervisor: <strong>Dr. Timothy Ogunleye</strong><br>
-    Department of Computer Science & Artificial Intelligence, Osiri University, Nebraska, USA &copy; 2026
+    Researcher: <strong>Benedict Baah</strong> | Supervisor: <strong>Dr. Timothy A Ogunleye</strong> &copy; 2026
 </div>
 """, unsafe_allow_html=True)

@@ -8,12 +8,10 @@
 
 ---
 
-## 🏛️ Academic & Research Metadata
+## 🏛️ Project & Research Metadata
 * **Project Title**: *Machine Learning Research and Application Development: Comparative Algorithmic Benchmarking & Explainable AI for Cardiovascular Risk Stratification*
 * **Researcher / Author**: **Benedict Baah**
-* **Faculty Advisor / Research Supervisor**: **Dr. Timothy Ogunleye**
-* **Department**: Department of Computer Science & Artificial Intelligence
-* **Institution**: Osiri University, Nebraska, USA
+* **Research Supervisor**: **Dr. Timothy A Ogunleye**
 
 ---
 
@@ -149,9 +147,7 @@ If you reference this research framework or dataset analysis in your academic wo
 ```bibtex
 @article{baah2026cardioai,
   title={Machine Learning Research and Application Development: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms and Explainable AI for Cardiovascular Risk Stratification},
-  author={Baah, Benedict and Ogunleye, Timothy},
-  journal={Department of Computer Science & Artificial Intelligence, Osiri University},
-  year={2026},
-  address={Nebraska, USA}
+  author={Baah, Benedict and Ogunleye, Timothy A},
+  year={2026}
 }
 ```

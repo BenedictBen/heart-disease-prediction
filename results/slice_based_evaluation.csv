@@ -1,0 +1,31 @@
+Model,Demographic Slice,Sample Size (N),Accuracy,Recall (Sensitivity),Specificity,F1-Score,ROC-AUC,Brier Score
+Stacking_Classifier,All Patients,61,0.8689,0.9286,0.8182,0.8667,0.9589,0.0861
+Stacking_Classifier,Sex: Male,41,0.8293,0.9524,0.7,0.8511,0.9476,0.1074
+Stacking_Classifier,Sex: Female,20,0.95,0.8571,1.0,0.9231,1.0,0.0425
+Stacking_Classifier,Age: < 55,28,0.9286,1.0,0.9048,0.875,1.0,0.0499
+Stacking_Classifier,Age: >= 55,33,0.8182,0.9048,0.6667,0.8636,0.9048,0.1168
+Random_Forest,All Patients,61,0.9016,0.9286,0.8788,0.8966,0.9643,0.098
+Random_Forest,Sex: Male,41,0.878,0.9524,0.8,0.8889,0.9452,0.1152
+Random_Forest,Sex: Female,20,0.95,0.8571,1.0,0.9231,1.0,0.0626
+Random_Forest,Age: < 55,28,1.0,1.0,1.0,1.0,1.0,0.061
+Random_Forest,Age: >= 55,33,0.8182,0.9048,0.6667,0.8636,0.9087,0.1294
+LightGBM,All Patients,61,0.8689,0.8929,0.8485,0.8621,0.9567,0.0864
+LightGBM,Sex: Male,41,0.8537,0.9524,0.75,0.8696,0.9476,0.1045
+LightGBM,Sex: Female,20,0.9,0.7143,1.0,0.8333,1.0,0.0492
+LightGBM,Age: < 55,28,0.9643,1.0,0.9524,0.9333,1.0,0.0455
+LightGBM,Age: >= 55,33,0.7879,0.8571,0.6667,0.8372,0.9048,0.1211
+XGBoost,All Patients,61,0.8852,0.8929,0.8788,0.8772,0.9448,0.1004
+XGBoost,Sex: Male,41,0.878,0.9524,0.8,0.8889,0.919,0.1185
+XGBoost,Sex: Female,20,0.9,0.7143,1.0,0.8333,1.0,0.0632
+XGBoost,Age: < 55,28,1.0,1.0,1.0,1.0,1.0,0.0544
+XGBoost,Age: >= 55,33,0.7879,0.8571,0.6667,0.8372,0.8651,0.1394
+CatBoost,All Patients,61,0.8361,0.8571,0.8182,0.8276,0.9426,0.1147
+CatBoost,Sex: Male,41,0.8049,0.9048,0.7,0.8261,0.9214,0.1324
+CatBoost,Sex: Female,20,0.9,0.7143,1.0,0.8333,1.0,0.0783
+CatBoost,Age: < 55,28,0.9286,1.0,0.9048,0.875,1.0,0.0767
+CatBoost,Age: >= 55,33,0.7576,0.8095,0.6667,0.8095,0.8651,0.1469
+Logistic_Regression_L2,All Patients,61,0.8689,0.9286,0.8182,0.8667,0.9535,0.0905
+Logistic_Regression_L2,Sex: Male,41,0.8293,0.9524,0.7,0.8511,0.931,0.1151
+Logistic_Regression_L2,Sex: Female,20,0.95,0.8571,1.0,0.9231,1.0,0.0402
+Logistic_Regression_L2,Age: < 55,28,0.8929,1.0,0.8571,0.8235,0.9932,0.0775
+Logistic_Regression_L2,Age: >= 55,33,0.8485,0.9048,0.75,0.8837,0.9048,0.1015

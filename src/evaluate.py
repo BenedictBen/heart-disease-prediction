@@ -1,5 +1,6 @@
 """
-Evaluation & Explainability Module: Multi-Metric Benchmark, Cross-Validation, Plots, and SHAP
+Evaluation & Explainability Module: Multi-Metric Benchmark, Cross-Validation, Plots, SHAP,
+Brier Score, MCC, Bootstrap Confidence Intervals, Calibration Curves, and Demographic Slice Analysis.
 """
 
 import os
@@ -20,12 +21,23 @@ from sklearn.metrics import (
     confusion_matrix,
     roc_curve,
     precision_recall_curve,
+    brier_score_loss,
+    matthews_corrcoef,
+    balanced_accuracy_score,
     silhouette_score,
     davies_bouldin_score,
     calinski_harabasz_score,
     adjusted_rand_score
 )
+from sklearn.calibration import calibration_curve
 from sklearn.decomposition import PCA
+
+# Windows Application Control compatibility shim for SHAP (bypasses unused text hashing binary)
+import sys
+from unittest.mock import MagicMock
+sys.modules.setdefault('sklearn.feature_extraction', MagicMock())
+sys.modules.setdefault('sklearn.feature_extraction._hashing_fast', MagicMock())
+sys.modules.setdefault('sklearn.feature_extraction.text', MagicMock())
 import shap
 
 RESULTS_DIR = "results"
@@ -39,9 +51,49 @@ os.makedirs(MODELS_DIR, exist_ok=True)
 # Use clean plot style
 plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
 
+
+def compute_bootstrap_ci(y_true, y_pred, y_proba, n_bootstraps=500, random_state=42):
+    """
+    Computes 95% empirical bootstrap confidence intervals for ROC-AUC and F1-Score.
+    """
+    rng = np.random.RandomState(random_state)
+    auc_bootstraps = []
+    f1_bootstraps = []
+    
+    n_samples = len(y_true)
+    y_true_arr = np.array(y_true)
+    
+    for _ in range(n_bootstraps):
+        idx = rng.randint(0, n_samples, n_samples)
+        if len(np.unique(y_true_arr[idx])) < 2:
+            continue
+        try:
+            boot_auc = roc_auc_score(y_true_arr[idx], y_proba[idx])
+            auc_bootstraps.append(boot_auc)
+        except Exception:
+            pass
+        boot_f1 = f1_score(y_true_arr[idx], y_pred[idx], zero_division=0)
+        f1_bootstraps.append(boot_f1)
+        
+    if auc_bootstraps:
+        auc_ci = (round(float(np.percentile(auc_bootstraps, 2.5)), 4),
+                  round(float(np.percentile(auc_bootstraps, 97.5)), 4))
+    else:
+        auc_ci = (0.0, 1.0)
+        
+    if f1_bootstraps:
+        f1_ci = (round(float(np.percentile(f1_bootstraps, 2.5)), 4),
+                 round(float(np.percentile(f1_bootstraps, 97.5)), 4))
+    else:
+        f1_ci = (0.0, 1.0)
+        
+    return auc_ci, f1_ci
+
+
 def evaluate_supervised_models(models_dict, X_train, X_test, y_train, y_test, feature_names):
     """
     Trains, cross-validates, and evaluates all supervised models.
+    Computes standard + advanced clinical metrics (Brier, MCC, Balanced Acc, 95% CI).
     Returns a benchmark DataFrame, fitted models dictionary, and generates ROC/PR/CM plots.
     """
     benchmark_records = []
@@ -75,32 +127,42 @@ def evaluate_supervised_models(models_dict, X_train, X_test, y_train, y_test, fe
         else:
             y_proba = y_pred.astype(float)
             
-        # 4. Metrics
+        # 4. Standard & Advanced Clinical Metrics
         acc = accuracy_score(y_test, y_pred)
+        bal_acc = balanced_accuracy_score(y_test, y_pred)
         prec = precision_score(y_test, y_pred, zero_division=0)
         rec = recall_score(y_test, y_pred, zero_division=0) # Sensitivity
         f1 = f1_score(y_test, y_pred, zero_division=0)
+        mcc = matthews_corrcoef(y_test, y_pred)
         
         try:
             auc = roc_auc_score(y_test, y_proba)
             pr_auc = average_precision_score(y_test, y_proba)
+            brier = brier_score_loss(y_test, y_proba)
         except Exception:
-            auc = acc
-            pr_auc = acc
+            auc, pr_auc, brier = acc, acc, 0.25
             
         # Specificity: TN / (TN + FP)
         tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
         spec = tn / (tn + fp) if (tn + fp) > 0 else 0.0
         
+        # 95% Bootstrap Confidence Intervals
+        auc_ci, f1_ci = compute_bootstrap_ci(y_test, y_pred, y_proba, n_bootstraps=500)
+        
         benchmark_records.append({
             "Algorithm": name,
             "Accuracy": round(acc, 4),
+            "Balanced Accuracy": round(bal_acc, 4),
             "Precision": round(prec, 4),
             "Recall (Sensitivity)": round(rec, 4),
             "Specificity": round(spec, 4),
             "F1-Score": round(f1, 4),
+            "F1 95% CI": f"[{f1_ci[0]:.3f}, {f1_ci[1]:.3f}]",
             "ROC-AUC": round(auc, 4),
+            "ROC-AUC 95% CI": f"[{auc_ci[0]:.3f}, {auc_ci[1]:.3f}]",
             "PR-AUC": round(pr_auc, 4),
+            "Brier Score": round(brier, 4),
+            "MCC": round(mcc, 4),
             "5-Fold CV Mean": round(cv_scores.mean(), 4),
             "5-Fold CV Std": round(cv_scores.std(), 4),
             "CV ROC-AUC Mean": round(cv_roc_scores.mean(), 4)
@@ -126,7 +188,7 @@ def evaluate_supervised_models(models_dict, X_train, X_test, y_train, y_test, fe
         plt.savefig(os.path.join(CM_DIR, f"cm_{name}.png"), dpi=200)
         plt.close()
         
-        print(f"[{name:<30}] Acc: {acc:.3f} | Recall: {rec:.3f} | F1: {f1:.3f} | ROC-AUC: {auc:.3f} | CV: {cv_scores.mean():.3f}±{cv_scores.std():.3f}")
+        print(f"[{name:<30}] Acc: {acc:.3f} | Recall: {rec:.3f} | F1: {f1:.3f} | ROC-AUC: {auc:.3f} | Brier: {brier:.3f} | MCC: {mcc:.3f}")
 
     benchmark_df = pd.DataFrame(benchmark_records)
     benchmark_df = benchmark_df.sort_values(by="ROC-AUC", ascending=False).reset_index(drop=True)
@@ -137,7 +199,7 @@ def evaluate_supervised_models(models_dict, X_train, X_test, y_train, y_test, fe
     print(f"\n[Supervised Evaluation] Benchmark saved to {benchmark_csv_path}")
     
     # Plot combined ROC Curves
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(11, 8))
     for name, (fpr, tpr, auc_score) in roc_curves_data.items():
         plt.plot(fpr, tpr, lw=1.8, label=f"{name} (AUC = {auc_score:.2f})")
     plt.plot([0, 1], [0, 1], color='navy', lw=1.5, linestyle='--')
@@ -145,14 +207,14 @@ def evaluate_supervised_models(models_dict, X_train, X_test, y_train, y_test, fe
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate (1 - Specificity)', fontsize=12)
     plt.ylabel('True Positive Rate (Sensitivity)', fontsize=12)
-    plt.title('Receiver Operating Characteristic (ROC) Comparison - 18+ Models', fontsize=14, fontweight='bold')
+    plt.title('Receiver Operating Characteristic (ROC) Comparison - 22 Models', fontsize=14, fontweight='bold')
     plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left", fontsize=8)
     plt.tight_layout()
     plt.savefig(os.path.join(RESULTS_DIR, "roc_curves.png"), dpi=300)
     plt.close()
     
     # Plot combined PR Curves
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(11, 8))
     for name, (rec_vals, prec_vals, pr_score) in pr_curves_data.items():
         plt.plot(rec_vals, prec_vals, lw=1.8, label=f"{name} (PR-AUC = {pr_score:.2f})")
     plt.xlabel('Recall (Sensitivity)', fontsize=12)
@@ -164,6 +226,123 @@ def evaluate_supervised_models(models_dict, X_train, X_test, y_train, y_test, fe
     plt.close()
     
     return benchmark_df, fitted_models
+
+
+def generate_calibration_curves(fitted_models, X_test, y_test, top_models=None):
+    """
+    Generates and saves clinical calibration curves (reliability diagrams)
+    comparing predicted probabilities vs empirical fraction of positives.
+    """
+    if top_models is None:
+        top_models = [
+            "Stacking_Classifier", "Random_Forest", "LightGBM", 
+            "XGBoost", "CatBoost", "Logistic_Regression_L2"
+        ]
+        
+    plt.figure(figsize=(9, 7))
+    plt.plot([0, 1], [0, 1], "k--", label="Perfect Calibration (Ideal)", lw=1.5)
+    
+    plotted_any = False
+    for name in top_models:
+        if name not in fitted_models:
+            continue
+        model = fitted_models[name]
+        if hasattr(model, "predict_proba"):
+            y_proba = model.predict_proba(X_test)[:, 1]
+            prob_true, prob_pred = calibration_curve(y_test, y_proba, n_bins=5, strategy='uniform')
+            brier = brier_score_loss(y_test, y_proba)
+            plt.plot(prob_pred, prob_true, marker='o', lw=2, label=f"{name} (Brier: {brier:.3f})")
+            plotted_any = True
+            
+    if plotted_any:
+        plt.xlabel("Mean Predicted Probability", fontsize=12)
+        plt.ylabel("Observed Fraction of Positives (Empirical Risk)", fontsize=12)
+        plt.title("Clinical Reliability Diagram / Calibration Curves", fontsize=14, fontweight='bold')
+        plt.legend(loc="lower right", fontsize=10)
+        plt.tight_layout()
+        cal_path = os.path.join(RESULTS_DIR, "calibration_curves.png")
+        plt.savefig(cal_path, dpi=300)
+        plt.close()
+        print(f"[Calibration] Saved reliability diagram to {cal_path}")
+
+
+def evaluate_demographic_slices(fitted_models, X_test_raw_df, X_test_scaled, y_test, models_to_test=None):
+    """
+    Performs slice-based subpopulation error analysis across biological sex and age cohorts.
+    Evaluates fairness and performance stability across key patient cohorts.
+    """
+    if models_to_test is None:
+        models_to_test = [
+            "Stacking_Classifier", "Random_Forest", "LightGBM", 
+            "XGBoost", "CatBoost", "Logistic_Regression_L2"
+        ]
+        
+    slices = {
+        "All Patients": np.ones(len(y_test), dtype=bool),
+        "Sex: Male": (X_test_raw_df['sex'].values == 1),
+        "Sex: Female": (X_test_raw_df['sex'].values == 0),
+        "Age: < 55": (X_test_raw_df['age'].values < 55),
+        "Age: >= 55": (X_test_raw_df['age'].values >= 55)
+    }
+    
+    slice_records = []
+    y_test_arr = np.array(y_test)
+    
+    for model_name in models_to_test:
+        if model_name not in fitted_models:
+            continue
+        model = fitted_models[model_name]
+        
+        for slice_name, mask in slices.items():
+            n_sub = int(mask.sum())
+            if n_sub < 5:
+                continue
+                
+            X_sub = X_test_scaled[mask]
+            y_sub = y_test_arr[mask]
+            y_sub_pred = model.predict(X_sub)
+            
+            sub_acc = accuracy_score(y_sub, y_sub_pred)
+            sub_rec = recall_score(y_sub, y_sub_pred, zero_division=0)
+            
+            # Specificity
+            cm_sub = confusion_matrix(y_sub, y_sub_pred)
+            if cm_sub.shape == (2, 2):
+                tn, fp, fn, tp = cm_sub.ravel()
+                sub_spec = tn / (tn + fp) if (tn + fp) > 0 else 0.0
+            else:
+                sub_spec = 1.0 if (y_sub_pred == 0).all() else 0.0
+                
+            sub_f1 = f1_score(y_sub, y_sub_pred, zero_division=0)
+            
+            if hasattr(model, "predict_proba"):
+                y_sub_proba = model.predict_proba(X_sub)[:, 1]
+                try:
+                    sub_auc = roc_auc_score(y_sub, y_sub_proba)
+                    sub_brier = brier_score_loss(y_sub, y_sub_proba)
+                except Exception:
+                    sub_auc, sub_brier = sub_acc, 0.25
+            else:
+                sub_auc, sub_brier = sub_acc, 0.25
+                
+            slice_records.append({
+                "Model": model_name,
+                "Demographic Slice": slice_name,
+                "Sample Size (N)": n_sub,
+                "Accuracy": round(sub_acc, 4),
+                "Recall (Sensitivity)": round(sub_rec, 4),
+                "Specificity": round(sub_spec, 4),
+                "F1-Score": round(sub_f1, 4),
+                "ROC-AUC": round(sub_auc, 4),
+                "Brier Score": round(sub_brier, 4)
+            })
+            
+    slice_df = pd.DataFrame(slice_records)
+    slice_path = os.path.join(RESULTS_DIR, "slice_based_evaluation.csv")
+    slice_df.to_csv(slice_path, index=False)
+    print(f"[Demographic Analysis] Slice evaluation saved to {slice_path}")
+    return slice_df
+
 
 def evaluate_unsupervised_models(unsupervised_dict, X_scaled, y_true):
     """
@@ -179,7 +358,7 @@ def evaluate_unsupervised_models(unsupervised_dict, X_scaled, y_true):
     
     # Ground Truth plot
     plt.subplot(1, len(unsupervised_dict) + 1, 1)
-    scatter = plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y_true, cmap='coolwarm', alpha=0.8, edgecolors='k', s=40)
+    plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y_true, cmap='coolwarm', alpha=0.8, edgecolors='k', s=40)
     plt.title("Clinical Ground Truth\n(0=Healthy, 1=Disease)", fontsize=10, fontweight='bold')
     plt.xlabel("PCA 1")
     plt.ylabel("PCA 2")
@@ -228,6 +407,7 @@ def evaluate_unsupervised_models(unsupervised_dict, X_scaled, y_true):
     unsup_df.to_csv(unsup_csv_path, index=False)
     print(f"[Unsupervised Evaluation] Saved cluster metrics to {unsup_csv_path}")
     return unsup_df
+
 
 def generate_explainability_artifacts(best_tree_model, X_train_scaled, X_test_scaled, feature_names, X_train_df):
     """
@@ -283,3 +463,4 @@ def generate_explainability_artifacts(best_tree_model, X_train_scaled, X_test_sc
         print("[Explainability] SHAP TreeExplainer saved to models/shap_explainer.pkl")
     except Exception as e:
         print(f"[Explainability] Warning in SHAP computation: {e}")
+

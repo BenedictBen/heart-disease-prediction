@@ -7,7 +7,6 @@ import shutil
 import pandas as pd
 import numpy as np
 
-KAGGL_CACHE_PATH = r"C:\Users\Christiana Yeboaah\.cache\kagglehub\datasets\ritwikb3\heart-disease-cleveland\versions\1\Heart_disease_cleveland_new.csv"
 DATA_DIR = "data"
 LOCAL_CSV_PATH = os.path.join(DATA_DIR, "heart.csv")
 
@@ -44,10 +43,8 @@ def load_and_prepare_data():
     """
     os.makedirs(DATA_DIR, exist_ok=True)
     
-    # Check if Kaggle cache exists, or direct local file
-    if os.path.exists(KAGGL_CACHE_PATH):
-        df = pd.read_csv(KAGGL_CACHE_PATH)
-    elif os.path.exists(LOCAL_CSV_PATH):
+    # Priority 1: Check canonical local CSV
+    if os.path.exists(LOCAL_CSV_PATH):
         df = pd.read_csv(LOCAL_CSV_PATH)
     else:
         # Fallback to UCI direct URL

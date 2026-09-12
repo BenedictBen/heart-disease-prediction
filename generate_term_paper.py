@@ -1,7 +1,7 @@
 """
 Term Paper Generator: Generates both Microsoft Word (.docx) and Markdown (.md)
 for 'Machine Learning Research and Application Development' by Benedict Baah.
-Supervised by Dr. Timothy Ogunleye, Osiri University.
+Supervised by Dr. Timothy A Ogunleye.
 """
 
 import os
@@ -48,18 +48,12 @@ def generate_docx():
     # ---------------------------------------------------------
     # TITLE & HEADER BLOCK
     # ---------------------------------------------------------
-    p_inst = doc.add_paragraph()
-    p_inst.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r_inst = p_inst.add_run("OSIRI UNIVERSITY, NEBRASKA, USA\nDEPARTMENT OF COMPUTER SCIENCE & ARTIFICIAL INTELLIGENCE")
-    r_inst.bold = True
-    r_inst.font.size = Pt(13)
-    r_inst.font.color.rgb = RGBColor(180, 20, 20)
-    
     p_course = doc.add_paragraph()
     p_course.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r_course = p_course.add_run("APPLICATION ASSESSMENT : MACHINE LEARNING RESEARCH AND APPLICATION DEVELOPMENT\nPART 1: COMPREHENSIVE RESEARCH TERM PAPER")
+    r_course = p_course.add_run("APPLICATION ASSESSMENT : MACHINE LEARNING RESEARCH AND APPLICATION DEVELOPMENT\nCOMPREHENSIVE RESEARCH TERM PAPER")
     r_course.bold = True
-    r_course.font.size = Pt(11)
+    r_course.font.size = Pt(12)
+    r_course.font.color.rgb = RGBColor(180, 20, 20)
     
     p_title = doc.add_paragraph()
     p_title.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -73,8 +67,8 @@ def generate_docx():
     p_meta.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_meta.paragraph_format.line_spacing = 1.15
     r_meta = p_meta.add_run(
-        "Researcher / Author: Benedict Baah (benbaah@osiriuniversity.org | +233 245759765)\n"
-        "Faculty Advisor / Research Supervisor: Dr. Timothy Ogunleye\n"
+        "Researcher / Author: Benedict Baah (+233 245759765)\n"
+        "Research Supervisor: Dr. Timothy A Ogunleye\n"
         "GitHub Repository: https://github.com/BenedictBen/heart-disease-prediction\n"
         "Live Deployed System: https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/\n"
     )
@@ -597,19 +591,15 @@ def generate_markdown():
     benchmark_df = pd.read_csv("results/model_benchmark_comparison.csv")
     unsup_df = pd.read_csv("results/unsupervised_benchmark_comparison.csv")
     
-    md_content = r"""# OSIRI UNIVERSITY, NEBRASKA, USA
-## DEPARTMENT OF COMPUTER SCIENCE & ARTIFICIAL INTELLIGENCE
-### APPLICATION ASSESSMENT : MACHINE LEARNING RESEARCH AND APPLICATION DEVELOPMENT
-#### PART 1: COMPREHENSIVE RESEARCH TERM PAPER
+    md_content = r"""# APPLICATION ASSESSMENT : MACHINE LEARNING RESEARCH AND APPLICATION DEVELOPMENT
+## COMPREHENSIVE RESEARCH TERM PAPER
 
 ---
 
 # CardioAI: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms, Stratified 5-Fold Cross-Validation, and Explainable AI (SHAP) for Cardiovascular Risk Stratification
 
-**Researcher / Author:** Benedict Baah (`benbaah@osiriuniversity.org` | +233 245759765)  
-**Faculty Advisor / Research Supervisor:** Dr. Timothy Ogunleye  
-**Department:** Department of Computer Science & Artificial Intelligence  
-**Institution:** Osiri University, Nebraska, USA  
+**Researcher / Author:** Benedict Baah (+233 245759765)  
+**Research Supervisor:** Dr. Timothy A Ogunleye  
 **GitHub Repository:** [https://github.com/BenedictBen/heart-disease-prediction](https://github.com/BenedictBen/heart-disease-prediction)  
 **Live Deployed System:** [https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/](https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/)  
 

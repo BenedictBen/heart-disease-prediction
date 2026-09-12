@@ -69,11 +69,20 @@ def test_pipeline():
         "results/precision_recall_curves.png",
         "results/feature_importance.png",
         "results/shap_summary.png",
-        "results/unsupervised_clusters.png"
+        "results/unsupervised_clusters.png",
+        "results/calibration_curves.png",
+        "results/slice_based_evaluation.csv",
+        "results/hyperparameter_tuning_summary.csv"
     ]
     for r in required_results:
         assert os.path.exists(r), f"Missing research result: {r}"
         print(f"  [OK] Result artifact '{r}' verified.")
+        
+    # Check new clinical metrics in benchmark comparison CSV
+    benchmark_df = pd.read_csv("results/model_benchmark_comparison.csv")
+    for metric_col in ["Brier Score", "MCC", "Balanced Accuracy", "ROC-AUC 95% CI"]:
+        assert metric_col in benchmark_df.columns, f"Missing metric column in benchmark: {metric_col}"
+    print(f"  [OK] Advanced clinical metrics verified in benchmark leaderboard.")
         
     print("\n" + "=" * 60)
     print("ALL TESTS PASSED! PROJECT IS 100% OPERATIONAL.")

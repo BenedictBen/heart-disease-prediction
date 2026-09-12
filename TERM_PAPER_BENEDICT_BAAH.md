@@ -1,16 +1,12 @@
-# OSIRI UNIVERSITY, NEBRASKA, USA
-## DEPARTMENT OF COMPUTER SCIENCE & ARTIFICIAL INTELLIGENCE
-### APPLICATION ASSESSMENT : MACHINE LEARNING RESEARCH AND APPLICATION DEVELOPMENT
-#### PART 1: COMPREHENSIVE RESEARCH TERM PAPER
+# APPLICATION ASSESSMENT : MACHINE LEARNING RESEARCH AND APPLICATION DEVELOPMENT
+## COMPREHENSIVE RESEARCH TERM PAPER
 
 ---
 
 # CardioAI: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms, Stratified 5-Fold Cross-Validation, and Explainable AI (SHAP) for Cardiovascular Risk Stratification
 
-**Researcher / Author:** Benedict Baah (`benbaah@osiriuniversity.org` | +233 245759765)  
-**Faculty Advisor / Research Supervisor:** Dr. Timothy Ogunleye  
-**Department:** Department of Computer Science & Artificial Intelligence  
-**Institution:** Osiri University, Nebraska, USA  
+**Researcher / Author:** Benedict Baah (+233 245759765)  
+**Research Supervisor:** Dr. Timothy A Ogunleye  
 **GitHub Repository:** [https://github.com/BenedictBen/heart-disease-prediction](https://github.com/BenedictBen/heart-disease-prediction)  
 **Live Deployed System:** [https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/](https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/)  
 
