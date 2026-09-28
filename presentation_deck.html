@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardioAI: 7-Slide Academic & Clinical Defense Deck | Benedict Baah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --navy: #0F172A;
+      --navy-light: #1E293B;
+      --slate: #475569;
+      --slate-light: #94A3B8;
+      --border: #E2E8F0;
+      --teal: #0D9488;
+      --teal-light: #F0FDFA;
+      --teal-border: #99F6E4;
+      --teal-dark: #0F766E;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #0F172A;
+      color: var(--navy);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    /* Presentation Frame (16:9 Aspect Ratio) */
+    .deck-container {
+      position: relative;
+      width: 100%;
+      max-width: 1280px;
+      aspect-ratio: 16 / 9;
+      background-color: var(--bg);
+      border-radius: 14px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 3rem 4rem;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(30px);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+      z-index: 10;
+    }
+
+    /* Header Block */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+    }
+
+    .header-content {
+      max-width: 85%;
+    }
+
+    .header-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-tag::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: var(--teal);
+      border-radius: 50%;
+    }
+
+    .slide-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+
+    .slide-subtitle {
+      font-size: 0.95rem;
+      color: var(--slate);
+      font-weight: 400;
+    }
+
+    .slide-counter {
+      background-color: var(--teal-light);
+      border: 1px solid var(--teal-border);
+      color: var(--teal-dark);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Content Layouts */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* SLIDE 1: Title Spotlight */
+    .title-spotlight {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .badge-pill {
+      align-self: flex-start;
+      background-color: var(--teal-light);
+      border: 1px solid var(--teal-border);
+      color: var(--teal);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--slate);
+      max-width: 950px;
+      line-height: 1.5;
+      margin-bottom: 1.75rem;
+    }
+
+    .accent-bar {
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--teal), #2DD4BF);
+      border-radius: 2px;
+      margin-bottom: 2.25rem;
+    }
+
+    .metadata-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .meta-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .meta-card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      margin-bottom: 0.65rem;
+    }
+
+    .meta-row {
+      display: flex;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .meta-label {
+      width: 180px;
+      font-weight: 600;
+      color: var(--slate);
+    }
+
+    .meta-val {
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    /* SLIDE 2: 5 Pillars Grid */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      height: 100%;
+    }
+
+    .pillar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pillar-num {
+      width: 32px;
+      height: 32px;
+      background-color: var(--teal-light);
+      border: 1px solid var(--teal-border);
+      color: var(--teal);
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .pillar-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+      line-height: 1.3;
+    }
+
+    .pillar-headline {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .fragment-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .fragment-list li {
+      font-size: 0.85rem;
+      color: var(--slate);
+      line-height: 1.45;
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    .fragment-list li::before {
+      content: "•";
+      color: var(--teal);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    /* SLIDE 3: 2-Column Scope & Matrix */
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+      height: 100%;
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.25rem;
+    }
+
+    .panel-sub {
+      font-size: 0.85rem;
+      color: var(--slate);
+      margin-bottom: 1.25rem;
+    }
+
+    .boundary-item {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+      font-size: 0.9rem;
+    }
+
+    .boundary-item .icon {
+      color: var(--teal);
+      font-weight: 800;
+    }
+
+    .boundary-item strong {
+      color: var(--navy);
+    }
+
+    .biomarker-box {
+      background: var(--bg);
+      border-left: 3px solid var(--teal);
+      padding: 0.75rem 1rem;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 0.65rem;
+    }
+
+    .biomarker-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .biomarker-desc {
+      font-size: 0.82rem;
+      color: var(--slate);
+      margin-top: 0.15rem;
+    }
+
+    /* SLIDE 4: 4-Stage Pipeline */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      position: relative;
+      height: 100%;
+    }
+
+    .stage-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem 1.25rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .stage-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+
+    .stage-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 0.25rem;
+    }
+
+    .stage-headline {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--slate);
+      margin-bottom: 1.25rem;
+    }
+
+    .connector-arrow {
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      background: var(--teal);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      z-index: 5;
+    }
+
+    /* SLIDE 5: 3-Card Operationalization */
+    .three-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      height: 100%;
+    }
+
+    .variable-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .var-kicker {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .var-header {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 1.25rem;
+    }
+
+    .var-row {
+      margin-bottom: 0.85rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .var-row strong {
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .var-row span {
+      color: var(--slate);
+    }
+
+    /* SLIDE 6: Big Metrics & Protocols */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-callout-card {
+      background: var(--card-bg);
+      border: 1px solid var(--teal-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-number {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--teal);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .metric-caption {
+      font-size: 0.78rem;
+      color: var(--slate);
+      margin-top: 0.2rem;
+    }
+
+    .protocols-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      flex: 1;
+    }
+
+    .protocol-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .protocol-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .protocol-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.75rem;
+    }
+
+    /* SLIDE 7: 4-Tile Stack */
+    .tiles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1.25rem;
+      height: 100%;
+    }
+
+    .tile-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.35rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tile-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .tile-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      text-transform: uppercase;
+    }
+
+    .tile-badge {
+      background: var(--teal-light);
+      border: 1px solid var(--teal-border);
+      color: var(--teal-dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .tile-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Controls Bar */
+    .deck-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1280px;
+      margin-top: 1rem;
+      color: #94A3B8;
+      font-size: 0.85rem;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      background: #1E293B;
+      color: white;
+      border: 1px solid #334155;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .btn:hover {
+      background: #334155;
+      border-color: var(--teal);
+    }
+
+    .slide-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dot.active {
+      background: var(--teal);
+      width: 24px;
+      border-radius: 12px;
+    }
+
+    .keyboard-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #64748B;
+      font-size: 0.8rem;
+    }
+
+    .kbd {
+      background: #1E293B;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 0.15rem 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #CBD5E1;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white !important;
+        padding: 0 !important;
+      }
+      .deck-controls {
+        display: none !important;
+      }
+      .deck-container {
+        max-width: 100% !important;
+        aspect-ratio: auto !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+      .slide {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always !important;
+        height: 100vh !important;
+        box-sizing: border-box !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 16:9 Presentation Deck Canvas -->
+  <div class="deck-container" id="deck">
+
+    <!-- ========================================== -->
+    <!-- SLIDE 1: Title Slide                       -->
+    <!-- ========================================== -->
+    <section class="slide active" id="slide-1">
+      <div class="title-spotlight">
+        <div class="badge-pill">Jain University • MCA Project Defense</div>
+        <h1 class="hero-title">CardioAI: Predictive Modeling & Biomarker Profiling for Cardiovascular Risk Stratification</h1>
+        <p class="hero-subtitle">Comparative Algorithmic Benchmarking of 21 Paradigms, Stratified 5-Fold Cross-Validation, and Explainable AI (SHAP)</p>
+        <div class="accent-bar"></div>
+
+        <div class="metadata-grid">
+          <div class="meta-card">
+            <div class="meta-card-title">Research Candidate</div>
+            <div class="meta-row">
+              <div class="meta-label">Candidate Name:</div>
+              <div class="meta-val"><strong>Benedict Baah</strong></div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">University Seat No:</div>
+              <div class="meta-val"><strong>241VMTR02058</strong></div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">Degree & Program:</div>
+              <div class="meta-val">Master of Computer Applications (MCA)</div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">Elective Specialization:</div>
+              <div class="meta-val">Data Analytics (DAAN)</div>
+            </div>
+          </div>
+
+          <div class="meta-card">
+            <div class="meta-card-title">Research & Academic Guidance</div>
+            <div class="meta-row">
+              <div class="meta-label">Research Supervisor:</div>
+              <div class="meta-val"><strong>Dr. Kwasi Kwateng</strong> (Research Mentor)</div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">Faculty Instructor:</div>
+              <div class="meta-val"><strong>Dr. Kavitha R G</strong> (Course Faculty)</div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">Institution:</div>
+              <div class="meta-val">Jain University (CDOE), Bengaluru</div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">Live Platform:</div>
+              <div class="meta-val">Streamlit Cloud CDSS & GitHub Repo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 2: Objectives of the Study           -->
+    <!-- ========================================== -->
+    <section class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="header-content">
+          <div class="header-tag">Research Foundations</div>
+          <h2 class="slide-title">Objectives of the Study: 5 Core Research Pillars</h2>
+          <p class="slide-subtitle">Structured empirical pillars guiding clinical feature discovery, predictive modeling, and bedside delivery</p>
+        </div>
+        <div class="slide-counter">SLIDE 02 / 07</div>
+      </div>
+
+      <div class="content-area">
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-num">01</div>
+            <h3 class="pillar-title">Biomarker Exploration</h3>
+            <div class="pillar-headline">Screen Predictors</div>
+            <ul class="fragment-list">
+              <li>13 physiological biomarkers analyzed.</li>
+              <li>Rank hemodynamic risk significance.</li>
+              <li>Identify key coronary determinants.</li>
+            </ul>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-num">02</div>
+            <h3 class="pillar-title">Feature Engineering</h3>
+            <div class="pillar-headline">Signal Optimization</div>
+            <ul class="fragment-list">
+              <li>Leakage-free z-score scaling.</li>
+              <li>Continuous median imputation.</li>
+              <li>Rigorous categorical encoding.</li>
+            </ul>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-num">03</div>
+            <h3 class="pillar-title">Model Architecture</h3>
+            <div class="pillar-headline">Model Benchmarking</div>
+            <ul class="fragment-list">
+              <li>21 algorithmic architectures.</li>
+              <li>Gradient boosting & baselines.</li>
+              <li>Multi-tier ensemble meta-learning.</li>
+            </ul>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-num">04</div>
+            <h3 class="pillar-title">Explainability (XAI)</h3>
+            <div class="pillar-headline">Risk Attribution</div>
+            <ul class="fragment-list">
+              <li>Patient-level SHAP values.</li>
+              <li>Clinical waterfall force plots.</li>
+              <li>Global feature impact rankings.</li>
+            </ul>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-num">05</div>
+            <h3 class="pillar-title">Clinical Interface</h3>
+            <div class="pillar-headline">Point-of-Care CDSS</div>
+            <ul class="fragment-list">
+              <li>Interactive Streamlit application.</li>
+              <li>Instant risk probability score.</li>
+              <li>Dynamic model switching engine.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 3: Scope of the Study                -->
+    <!-- ========================================== -->
+    <section class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="header-content">
+          <div class="header-tag">Clinical Delimitations</div>
+          <h2 class="slide-title">Scope of the Study: Boundaries & Biomarker Matrix</h2>
+          <p class="slide-subtitle">Defined observational patient criteria, clinical scope exclusions, and 13 target physiological features</p>
+        </div>
+        <div class="slide-counter">SLIDE 03 / 07</div>
+      </div>
+
+      <div class="content-area">
+        <div class="two-col-grid">
+          <div class="panel-card">
+            <h3 class="panel-header">Clinical Inclusions & Exclusions</h3>
+            <p class="panel-sub">Defined boundaries ensuring clinical research validity</p>
+
+            <div class="boundary-item">
+              <span class="icon">✔</span>
+              <div><strong>Target Cohort:</strong> Adult cardiology referral patients (Cleveland Clinic).</div>
+            </div>
+            <div class="boundary-item">
+              <span class="icon">✔</span>
+              <div><strong>Sample Constraints:</strong> Strict N=303 records; incomplete entries pruned.</div>
+            </div>
+            <div class="boundary-item">
+              <span class="icon">✔</span>
+              <div><strong>Inclusion Protocol:</strong> Confirmed fluoroscopy angiography and resting ECG.</div>
+            </div>
+            <div class="boundary-item">
+              <span class="icon">✔</span>
+              <div><strong>Exclusion Protocol:</strong> Pediatric cases and unverified clinical records removed.</div>
+            </div>
+            <div class="boundary-item">
+              <span class="icon">✔</span>
+              <div><strong>Diagnostic Standard:</strong> Coronary narrowing threshold: ≥ 50% stenosis.</div>
+            </div>
+            <div class="boundary-item">
+              <span class="icon">✔</span>
+              <div><strong>Ethical Compliance:</strong> De-identified canonical data; zero patient risk.</div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <h3 class="panel-header">Target Biomarker Matrix (Core 5)</h3>
+            <p class="panel-sub">Key hemodynamic & fluoroscopic indicators analyzed</p>
+
+            <div class="biomarker-box">
+              <div class="biomarker-title">Serum Cholesterol (<code>chol</code>)</div>
+              <div class="biomarker-desc">Fasting lipid profile in mg/dL; key metabolic risk marker.</div>
+            </div>
+            <div class="biomarker-box">
+              <div class="biomarker-title">Resting Blood Pressure (<code>trestbps</code>)</div>
+              <div class="biomarker-desc">Systolic arterial pressure in mm Hg on hospital admission.</div>
+            </div>
+            <div class="biomarker-box">
+              <div class="biomarker-title">ST Depression (<code>oldpeak</code>)</div>
+              <div class="biomarker-desc">Exercise-induced ST-segment myocardial ischemic strain (mm).</div>
+            </div>
+            <div class="biomarker-box">
+              <div class="biomarker-title">Fluoroscopy Vessels (<code>ca</code>)</div>
+              <div class="biomarker-desc">Major coronary arteries visualized with dye blockage (0 to 3).</div>
+            </div>
+            <div class="biomarker-box">
+              <div class="biomarker-title">Maximum Heart Rate (<code>thalach</code>)</div>
+              <div class="biomarker-desc">Peak exercise chronotropic capacity in beats per minute (bpm).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 4: Methodology Architecture          -->
+    <!-- ========================================== -->
+    <section class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="header-content">
+          <div class="header-tag">End-to-End Pipeline</div>
+          <h2 class="slide-title">Research Methodology & Workflow Architecture</h2>
+          <p class="slide-subtitle">Linear 4-stage pipeline architecture from observational clinical cohort to explainable AI delivery</p>
+        </div>
+        <div class="slide-counter">SLIDE 04 / 07</div>
+      </div>
+
+      <div class="content-area">
+        <div class="pipeline-grid">
+          <div class="stage-card">
+            <div class="stage-tag">Stage 01</div>
+            <h3 class="stage-title">Data Ingestion</h3>
+            <div class="stage-headline">Raw Cohort Verification</div>
+            <ul class="fragment-list">
+              <li>UCI Cleveland cohort import.</li>
+              <li>Verify 13 clinical biomarkers.</li>
+              <li>Validate attribute data schemas.</li>
+              <li>Isolate test evaluation set.</li>
+            </ul>
+            <div class="connector-arrow">→</div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-tag">Stage 02</div>
+            <h3 class="stage-title">Preprocessing</h3>
+            <div class="stage-headline">Leakage-Free Cleaning</div>
+            <ul class="fragment-list">
+              <li>Median imputation for continuous.</li>
+              <li>Mode imputation for discrete.</li>
+              <li>Pipeline-encapsulated z-scaling.</li>
+              <li>Zero train-test data leakage.</li>
+            </ul>
+            <div class="connector-arrow">→</div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-tag">Stage 03</div>
+            <h3 class="stage-title">Model Tuning</h3>
+            <div class="stage-headline">Stratified Optimization</div>
+            <ul class="fragment-list">
+              <li>5-Fold stratified cross-validation.</li>
+              <li>Systematic grid search tuning.</li>
+              <li>21 algorithmic paradigms.</li>
+              <li>Multi-tier stacking ensemble.</li>
+            </ul>
+            <div class="connector-arrow">→</div>
+          </div>
+
+          <div class="stage-card">
+            <div class="stage-tag">Stage 04</div>
+            <h3 class="stage-title">Validation & SHAP</h3>
+            <div class="stage-headline">Clinical Explainability</div>
+            <ul class="fragment-list">
+              <li>ROC-AUC & Brier evaluation.</li>
+              <li>500-iteration bootstrap 95% CIs.</li>
+              <li>SHAP TreeExplainer attribution.</li>
+              <li>Bedside waterfall risk delivery.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 5: Research Design                   -->
+    <!-- ========================================== -->
+    <section class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="header-content">
+          <div class="header-tag">Experimental Design</div>
+          <h2 class="slide-title">Research Design & Variable Operationalization</h2>
+          <p class="slide-subtitle">Quantitative comparative framework, clinical variable definitions, and experimental validity controls</p>
+        </div>
+        <div class="slide-counter">SLIDE 05 / 07</div>
+      </div>
+
+      <div class="content-area">
+        <div class="three-card-grid">
+          <div class="variable-card">
+            <div class="var-kicker">Independent Variables (X)</div>
+            <h3 class="var-header">Physiological Predictors</h3>
+            <div class="var-row">
+              <strong>Demographics:</strong> <span>Age (29–77 yrs), Biological Sex.</span>
+            </div>
+            <div class="var-row">
+              <strong>Symptom Class:</strong> <span>Chest pain type (Typical, Atypical, Non-anginal, Asymptomatic).</span>
+            </div>
+            <div class="var-row">
+              <strong>Hemodynamics:</strong> <span>Resting BP, Max Heart Rate, Resting Electrocardiogram.</span>
+            </div>
+            <div class="var-row">
+              <strong>Ischemia Markers:</strong> <span>ST depression (oldpeak), Peak ST slope.</span>
+            </div>
+            <div class="var-row">
+              <strong>Fluoroscopy:</strong> <span>Major vessels (0–3), Thallium scintigraphy.</span>
+            </div>
+          </div>
+
+          <div class="variable-card">
+            <div class="var-kicker">Dependent Variable (Y)</div>
+            <h3 class="var-header">Clinical Target</h3>
+            <div class="var-row">
+              <strong>Diagnostic Standard:</strong> <span>Coronary artery stenosis ≥ 50%.</span>
+            </div>
+            <div class="var-row">
+              <strong>Binary Encoding:</strong> <span>0 = Healthy (54.1%), 1 = CAD Present (45.9%).</span>
+            </div>
+            <div class="var-row">
+              <strong>Cohort Split:</strong> <span>164 negative controls, 139 positive cases.</span>
+            </div>
+            <div class="var-row">
+              <strong>Clinical Utility:</strong> <span>Non-invasive early triage risk stratification.</span>
+            </div>
+            <div class="var-row">
+              <strong>Target Goal:</strong> <span>Minimize diagnostic latency in emergency triage.</span>
+            </div>
+          </div>
+
+          <div class="variable-card">
+            <div class="var-kicker">Experimental Controls</div>
+            <h3 class="var-header">Methodological Rigor</h3>
+            <div class="var-row">
+              <strong>Leakage Shield:</strong> <span>Transformers fit strictly inside training folds.</span>
+            </div>
+            <div class="var-row">
+              <strong>Stratified Balancing:</strong> <span>Identical class proportions across all folds.</span>
+            </div>
+            <div class="var-row">
+              <strong>Baseline Controls:</strong> <span>Benchmarked against standard L1/L2 Logistic.</span>
+            </div>
+            <div class="var-row">
+              <strong>Calibration:</strong> <span>Reliability curves & Brier score optimization.</span>
+            </div>
+            <div class="var-row">
+              <strong>Statistical Tests:</strong> <span>95% bootstrap confidence interval bounds.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 6: Data Collection & Resampling      -->
+    <!-- ========================================== -->
+    <section class="slide" id="slide-6">
+      <div class="slide-header">
+        <div class="header-content">
+          <div class="header-tag">Statistical Soundness</div>
+          <h2 class="slide-title">Data Collection & Sampling Resampling Protocol</h2>
+          <p class="slide-subtitle">Observational clinical sample curation, stratified cross-validation, and non-parametric bootstrap estimation</p>
+        </div>
+        <div class="slide-counter">SLIDE 06 / 07</div>
+      </div>
+
+      <div class="content-area">
+        <div class="metrics-row">
+          <div class="metric-callout-card">
+            <div class="metric-number">303</div>
+            <div class="metric-title">Cleveland Patients</div>
+            <div class="metric-caption">Canonical reference cohort</div>
+          </div>
+          <div class="metric-callout-card">
+            <div class="metric-number">5-Fold</div>
+            <div class="metric-title">Stratified CV</div>
+            <div class="metric-caption">Variance reduction across splits</div>
+          </div>
+          <div class="metric-callout-card">
+            <div class="metric-number">500</div>
+            <div class="metric-title">Bootstrap Resamples</div>
+            <div class="metric-caption">Empirical 95% Confidence Intervals</div>
+          </div>
+          <div class="metric-callout-card">
+            <div class="metric-number">97.19%</div>
+            <div class="metric-title">Top ROC-AUC</div>
+            <div class="metric-caption">AdaBoost benchmark leader</div>
+          </div>
+        </div>
+
+        <div class="protocols-grid">
+          <div class="protocol-card">
+            <div class="protocol-tag">Observational Sample</div>
+            <h3 class="protocol-title">Cleveland Cohort Curation</h3>
+            <ul class="fragment-list">
+              <li>Canonical multi-center clinical registry.</li>
+              <li>De-identified cardiac catheterization records.</li>
+              <li>Complete angiographic ground truth labels.</li>
+              <li>Strict schema and feature integrity validation.</li>
+            </ul>
+          </div>
+
+          <div class="protocol-card">
+            <div class="protocol-tag">Validation Shield</div>
+            <h3 class="protocol-title">Stratified Cross-Validation</h3>
+            <ul class="fragment-list">
+              <li>Maintains 46% disease prevalence in every fold.</li>
+              <li>Eliminates sampling and distribution skew.</li>
+              <li>Encapsulates preprocessing inside folds.</li>
+              <li>Guarantees unbiased test generalizability.</li>
+            </ul>
+          </div>
+
+          <div class="protocol-card">
+            <div class="protocol-tag">Uncertainty Bounds</div>
+            <h3 class="protocol-title">500-Iteration Bootstrap</h3>
+            <ul class="fragment-list">
+              <li>Resampling with replacement (N=303).</li>
+              <li>Generates empirical 95% confidence intervals.</li>
+              <li>Distribution-free statistical soundness.</li>
+              <li>Confirms significant algorithmic superiority.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SLIDE 7: Tools & Technical Environment     -->
+    <!-- ========================================== -->
+    <section class="slide" id="slide-7">
+      <div class="slide-header">
+        <div class="header-content">
+          <div class="header-tag">Production Infrastructure</div>
+          <h2 class="slide-title">Data Analysis Tools & Technical Environment</h2>
+          <p class="slide-subtitle">Production-grade biomedical data science stack from runtime computation to interactive clinical delivery</p>
+        </div>
+        <div class="slide-counter">SLIDE 07 / 07</div>
+      </div>
+
+      <div class="content-area">
+        <div class="tiles-grid">
+          <div class="tile-card">
+            <div class="tile-top">
+              <div class="tile-tag">Runtime & Compute</div>
+              <div class="tile-badge">PYTHON 3.11+</div>
+            </div>
+            <h3 class="tile-title">Core Language & Vector Math</h3>
+            <ul class="fragment-list">
+              <li>NumPy & Pandas for matrix computations.</li>
+              <li>Reproducible random seeds across experiments.</li>
+              <li>Fast vectorized biomarker signal transformations.</li>
+              <li>Robust handling of missing values and datatypes.</li>
+            </ul>
+          </div>
+
+          <div class="tile-card">
+            <div class="tile-top">
+              <div class="tile-tag">Algorithmic Suite</div>
+              <div class="tile-badge">SCIKIT-LEARN & BOOSTING</div>
+            </div>
+            <h3 class="tile-title">Predictive Modeling Engines</h3>
+            <ul class="fragment-list">
+              <li>Scikit-Learn, LightGBM, XGBoost, CatBoost.</li>
+              <li>21 distinct algorithmic paradigms evaluated.</li>
+              <li>Automated cross-validated hyperparameter tuning.</li>
+              <li>Multi-tier meta-stacking ensemble architecture.</li>
+            </ul>
+          </div>
+
+          <div class="tile-card">
+            <div class="tile-top">
+              <div class="tile-tag">Explainable AI</div>
+              <div class="tile-badge">SHAP ENGINE</div>
+            </div>
+            <h3 class="tile-title">Model Interpretability & Trust</h3>
+            <ul class="fragment-list">
+              <li>Shapley Additive exPlanations for 13 features.</li>
+              <li>TreeExplainer & KernelExplainer architectures.</li>
+              <li>Patient-level local risk waterfall force plots.</li>
+              <li>Direct clinician auditability for bedside confidence.</li>
+            </ul>
+          </div>
+
+          <div class="tile-card">
+            <div class="tile-top">
+              <div class="tile-tag">Point-of-Care CDSS</div>
+              <div class="tile-badge">STREAMLIT CLOUD</div>
+            </div>
+            <h3 class="tile-title">Deployment & Interactive Delivery</h3>
+            <ul class="fragment-list">
+              <li>Zero-install responsive web browser application.</li>
+              <li>Instant patient risk scoring and triage gauge.</li>
+              <li>Dynamic model switching across all 21 models.</li>
+              <li>Interactive unsupervised PCA & K-Means clustering.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Presentation Deck Navigation Bar -->
+  <div class="deck-controls">
+    <div class="nav-buttons">
+      <button class="btn" id="prevBtn" onclick="prevSlide()">❮ Previous</button>
+      <button class="btn" id="nextBtn" onclick="nextSlide()">Next ❯</button>
+      <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+      <button class="btn" onclick="window.print()">🖨 Print / PDF</button>
+    </div>
+
+    <div class="slide-dots" id="dotsContainer">
+      <div class="dot active" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+      <div class="dot" onclick="goToSlide(3)"></div>
+      <div class="dot" onclick="goToSlide(4)"></div>
+      <div class="dot" onclick="goToSlide(5)"></div>
+      <div class="dot" onclick="goToSlide(6)"></div>
+      <div class="dot" onclick="goToSlide(7)"></div>
+    </div>
+
+    <div class="keyboard-hint">
+      Use <span class="kbd">←</span> <span class="kbd">→</span> or <span class="kbd">Space</span> to navigate | <span class="kbd">F</span> for Fullscreen
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 7;
+
+    function showSlide(index) {
+      if (index < 1) index = 1;
+      if (index > totalSlides) index = totalSlides;
+      currentSlide = index;
+
+      for (let i = 1; i <= totalSlides; i++) {
+        const slide = document.getElementById(`slide-${i}`);
+        if (slide) {
+          slide.classList.toggle('active', i === currentSlide);
+        }
+      }
+
+      // Update dots
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      // Update button state
+      document.getElementById('prevBtn').disabled = currentSlide === 1;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function goToSlide(index) {
+      showSlide(index);
+    }
+
+    function toggleFullscreen() {
+      const elem = document.getElementById('deck');
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => {
+          alert(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'Home') {
+        goToSlide(1);
+      } else if (e.key === 'End') {
+        goToSlide(totalSlides);
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      }
+    });
+
+    // Initialize
+    showSlide(1);
+  </script>
+</body>
+</html>
