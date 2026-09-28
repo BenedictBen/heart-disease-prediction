@@ -1,17 +1,24 @@
 # CardioAI: Machine Learning Research and Application Development
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B.svg)](https://streamlit.io/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B.svg)](https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717.svg?logo=github)](https://github.com/BenedictBen/heart-disease-prediction)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **Comparative Empirical Benchmarking of 21 Algorithmic Paradigms, Stratified 5-Fold Cross-Validation, and Explainable AI (SHAP) for Cardiovascular Risk Stratification**
 
 ---
 
+## 🌐 Live System & Source Links
+* 🚀 **Live Interactive Web Application**: [**Launch CardioAI Web App**](https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/)
+* 💻 **Official GitHub Repository**: [**BenedictBen/heart-disease-prediction**](https://github.com/BenedictBen/heart-disease-prediction)
+
+---
+
 ## 🏛️ Project & Research Metadata
 * **Project Title**: *Machine Learning Research and Application Development: Comparative Algorithmic Benchmarking & Explainable AI for Cardiovascular Risk Stratification*
 * **Researcher / Author**: **Benedict Baah**
-* **Research Supervisor**: **Dr. Timothy A Ogunleye**
+* **Project Supervisors**: **Dr. Kavitha R G** and **Dr. Kwasi Kwateng**
 
 ---
 
@@ -179,7 +186,7 @@ If you reference this research framework or dataset analysis in your academic wo
 ```bibtex
 @article{baah2026cardioai,
   title={Machine Learning Research and Application Development: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms and Explainable AI for Cardiovascular Risk Stratification},
-  author={Baah, Benedict and Ogunleye, Timothy A},
+  author={Baah, Benedict and Kavitha, R. G. and Kwateng, Kwasi},
   year={2026}
 }
 ```
