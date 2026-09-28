@@ -204,7 +204,7 @@ def build_slide_1(prs):
     items_cand = [
         ("University Seat No (USN)", "241VMTR02058"),
         ("Academic Program", "Master of Computer Applications (MCA)"),
-        ("Specialization Elective", "Data Analytics (DAAN)"),
+        ("Specialization Elective", "Computer Science and IT"),
         ("Institution", "Jain University (CDOE), Bengaluru")
     ]
     for lbl, val in items_cand:
