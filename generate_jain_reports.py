@@ -104,7 +104,7 @@ def add_meta_table(doc):
     col_widths = [Inches(2.2), Inches(4.3)]
     metadata = [
         ("Name of Learner", "Benedict Baah"),
-        ("USN (Student ID)", "[Insert Your USN / Student ID]"),
+        ("USN (Student ID)", "241VMTR02058"),
         ("Elective / Specialization", "Computer Science & IT (CSIT) / Data Analytics (DAAN)"),
         ("Faculty Supervisors", "Dr. Kavitha R G & Dr. Kwasi Kwateng"),
         ("Live Web Application", "https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/"),

@@ -158,7 +158,7 @@ def create_report():
     col_w = [Inches(2.4), Inches(4.1)]
     meta1 = [
         ("Name", "Benedict Baah"),
-        ("USN", "[Insert Your USN / Student ID]"),
+        ("USN", "241VMTR02058"),
         ("Elective", "Computer Science & IT / Data Analytics"),
         ("Date of Submission", "September 28, 2026")
     ]
@@ -203,7 +203,7 @@ def create_report():
     
     p("Master of Computer Applications", bold=True, size=16, align=WD_ALIGN_PARAGRAPH.CENTER, space_before=0, space_after=50, color=RGBColor(0, 32, 96))
     
-    p("Submitted by\nBenedict Baah\nUSN: [Insert Your USN / Student ID]",
+    p("Submitted by\nBenedict Baah\nUSN: 241VMTR02058",
       bold=True, size=12.5, align=WD_ALIGN_PARAGRAPH.CENTER, space_before=0, space_after=25)
     
     p("Under the guidance of\nDr. Kavitha R G & Dr. Kwasi Kwateng\nFaculty Guides",
@@ -223,14 +223,14 @@ def create_report():
     p("Date: September 28, 2026", space_before=0, space_after=50)
     
     p("____________________________________", align=WD_ALIGN_PARAGRAPH.RIGHT, space_after=2)
-    p("Benedict Baah               \nUSN: [Insert Your USN / Student ID]     ", bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT)
+    p("Benedict Baah               \nUSN: 241VMTR02058     ", bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT)
 
     doc.add_page_break()
 
     # CERTIFICATE (MCA Template Page 4)
     p("CERTIFICATE", bold=True, size=15, align=WD_ALIGN_PARAGRAPH.CENTER, space_before=20, space_after=25, color=RGBColor(0, 32, 96))
     
-    p("This is to certify that the Project report submitted by Mr. Benedict Baah bearing USN: [Insert Your USN / Student ID] on the title \"CardioAI: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms, Probabilistic Calibration, and Explainable AI for Cardiovascular Risk Stratification\" is a record of project work done by him during the academic year 2025-26 under our guidance and supervision in partial fulfilment of Master of Computer Applications.")
+    p("This is to certify that the Project report submitted by Mr. Benedict Baah bearing USN: 241VMTR02058 on the title \"CardioAI: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms, Probabilistic Calibration, and Explainable AI for Cardiovascular Risk Stratification\" is a record of project work done by him during the academic year 2025-26 under our guidance and supervision in partial fulfilment of Master of Computer Applications.")
     
     p("Place: Bangalore", space_before=45, space_after=4)
     p("Date: September 28, 2026", space_before=0, space_after=50)
@@ -250,7 +250,7 @@ def create_report():
     p("Finally, I extend my heartfelt gratitude to my family, peers, and well-wishers for their unwavering support, patience, and encouragement throughout the tenure of my Master of Computer Applications program.")
 
     p("____________________________________", align=WD_ALIGN_PARAGRAPH.RIGHT, space_before=30, space_after=2)
-    p("Benedict Baah               \nUSN: [Insert Your USN / Student ID]     ", bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT)
+    p("Benedict Baah               \nUSN: 241VMTR02058     ", bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT)
 
     doc.add_page_break()
 
@@ -1193,7 +1193,7 @@ def create_report():
     
     plag_meta = [
         ("Student Name", "Benedict Baah"),
-        ("USN", "[Insert Your USN / Student ID]"),
+        ("USN", "241VMTR02058"),
         ("Overall Similarity Index", "12% (Fully Compliant with <= 20% Guideline)"),
         ("Plagiarism Verification Date", "September 28, 2026")
     ]
