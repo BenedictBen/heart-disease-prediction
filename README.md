@@ -17,8 +17,9 @@
 
 ## 🏛️ Project & Research Metadata
 * **Project Title**: *Machine Learning Research and Application Development: Comparative Algorithmic Benchmarking & Explainable AI for Cardiovascular Risk Stratification*
-* **Researcher / Author**: **Benedict Baah**
-* **Project Supervisors**: **Dr. Kavitha R G** and **Dr. Kwasi Kwateng**
+* **Researcher / Author**: **Benedict Baah** (USN: `241VMTR02058`)
+* **Research Supervisor & Mentor**: **Dr. Kwasi Kwateng**
+* **Academic / Faculty Instructor**: **Dr. Kavitha R G**
 
 ---
 
@@ -186,7 +187,7 @@ If you reference this research framework or dataset analysis in your academic wo
 ```bibtex
 @article{baah2026cardioai,
   title={Machine Learning Research and Application Development: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms and Explainable AI for Cardiovascular Risk Stratification},
-  author={Baah, Benedict and Kavitha, R. G. and Kwateng, Kwasi},
+  author={Baah, Benedict and Kwateng, Kwasi and Kavitha, R. G.},
   year={2026}
 }
 ```

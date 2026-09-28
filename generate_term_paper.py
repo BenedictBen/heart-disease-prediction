@@ -1,7 +1,7 @@
 """
 Term Paper Generator: Generates both Microsoft Word (.docx) and Markdown (.md)
 for 'Machine Learning Research and Application Development' by Benedict Baah.
-Supervised by Dr. Timothy A Ogunleye.
+Supervised by Dr. Kwasi Kwateng (Research Supervisor) and Dr. Kavitha R G (Faculty Instructor).
 """
 
 import os
@@ -67,8 +67,9 @@ def generate_docx():
     p_meta.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p_meta.paragraph_format.line_spacing = 1.15
     r_meta = p_meta.add_run(
-        "Researcher / Author: Benedict Baah (+233 245759765)\n"
-        "Research Supervisor: Dr. Timothy A Ogunleye\n"
+        "Researcher / Author: Benedict Baah (USN: 241VMTR02058, +233 245759765)\n"
+        "Research Supervisor & Mentor: Dr. Kwasi Kwateng\n"
+        "Academic / Faculty Instructor: Dr. Kavitha R G\n"
         "GitHub Repository: https://github.com/BenedictBen/heart-disease-prediction\n"
         "Live Deployed System: https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/\n"
     )
@@ -598,8 +599,9 @@ def generate_markdown():
 
 # CardioAI: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms, Stratified 5-Fold Cross-Validation, and Explainable AI (SHAP) for Cardiovascular Risk Stratification
 
-**Researcher / Author:** Benedict Baah (+233 245759765)  
-**Research Supervisor:** Dr. Timothy A Ogunleye  
+**Researcher / Author:** Benedict Baah (USN: 241VMTR02058, +233 245759765)  
+**Research Supervisor & Mentor:** Dr. Kwasi Kwateng  
+**Academic / Faculty Instructor:** Dr. Kavitha R G  
 **GitHub Repository:** [https://github.com/BenedictBen/heart-disease-prediction](https://github.com/BenedictBen/heart-disease-prediction)  
 **Live Deployed System:** [https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/](https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/)  
 

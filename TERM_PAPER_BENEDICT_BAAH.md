@@ -5,8 +5,9 @@
 
 # CardioAI: Comparative Empirical Benchmarking of 21 Algorithmic Paradigms, Stratified 5-Fold Cross-Validation, and Explainable AI (SHAP) for Cardiovascular Risk Stratification
 
-**Researcher / Author:** Benedict Baah (+233 245759765)  
-**Research Supervisor:** Dr. Timothy A Ogunleye  
+**Researcher / Author:** Benedict Baah (USN: 241VMTR02058, +233 245759765)  
+**Research Supervisor & Mentor:** Dr. Kwasi Kwateng  
+**Academic / Faculty Instructor:** Dr. Kavitha R G  
 **GitHub Repository:** [https://github.com/BenedictBen/heart-disease-prediction](https://github.com/BenedictBen/heart-disease-prediction)  
 **Live Deployed System:** [https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/](https://heart-disease-prediction-hv6rhgtwcbaogahkc2mgne.streamlit.app/)  
 
