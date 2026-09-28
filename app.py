@@ -139,7 +139,7 @@ with st.sidebar:
     
     st.markdown("### 📋 Project Attribution")
     st.markdown("**Researcher:** Benedict Baah")
-    st.markdown("**Supervisor:** Dr. Timothy A Ogunleye")
+    st.markdown("**Supervisors:** Dr. Kavitha R G & Dr. Kwasi Kwateng")
     st.markdown("---")
     
     st.markdown("### 📋 Empirical Metadata")
@@ -157,7 +157,7 @@ st.markdown('<div class="sub-header">Comparative Benchmarking of 21 Algorithmic 
 # Researcher & Supervisor Info Card
 st.markdown("""
 <div style="background-color: #1A1D24; padding: 0.85rem 1.2rem; border-radius: 8px; border-left: 4px solid #4CC9F0; margin-bottom: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; font-size: 0.9rem;">
-    <div><strong>Researcher:</strong> Benedict Baah &nbsp;|&nbsp; <strong>Supervisor:</strong> Dr. Timothy A Ogunleye</div>
+    <div><strong>Researcher:</strong> Benedict Baah &nbsp;|&nbsp; <strong>Supervisors:</strong> Dr. Kavitha R G & Dr. Kwasi Kwateng</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -518,6 +518,6 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #8D99AE; font-size: 0.82rem; padding: 1rem 0;">
     <strong>CardioAI: Machine Learning Research and Application Development</strong><br>
-    Researcher: <strong>Benedict Baah</strong> | Supervisor: <strong>Dr. Timothy A Ogunleye</strong> &copy; 2026
+    Researcher: <strong>Benedict Baah</strong> | Supervisors: <strong>Dr. Kavitha R G & Dr. Kwasi Kwateng</strong> &copy; 2026
 </div>
 """, unsafe_allow_html=True)
