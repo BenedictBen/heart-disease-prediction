@@ -18,7 +18,7 @@
 ## 🏛️ Project & Research Metadata
 * **Project Title**: *Machine Learning Research and Application Development: Comparative Algorithmic Benchmarking & Explainable AI for Cardiovascular Risk Stratification*
 * **Researcher / Author**: **Benedict Baah** (USN: `241VMTR02058`)
-* **Research Supervisor & Mentor**: **Dr. Kwasi Kwateng**
+* **Research Supervisor & Mentor**: **Dr. Timothy A. Ogunleye, PhD**
 * **Academic / Faculty Instructor**: **Dr. Kavitha R G**
 
 ---
