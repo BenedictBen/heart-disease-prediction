@@ -10,6 +10,27 @@ sys.modules.setdefault('sklearn.feature_extraction', MagicMock())
 sys.modules.setdefault('sklearn.feature_extraction._hashing_fast', MagicMock())
 sys.modules.setdefault('sklearn.feature_extraction.text', MagicMock())
 
+# NumPy 1.x / 2.x cross-version unpickling compatibility bridge
+try:
+    import numpy._core
+except ImportError:
+    try:
+        import numpy.core
+        sys.modules['numpy._core'] = numpy.core
+        sys.modules['numpy._core.multiarray'] = numpy.core.multiarray
+    except Exception:
+        pass
+
+try:
+    import numpy.core
+except ImportError:
+    try:
+        import numpy._core
+        sys.modules['numpy.core'] = numpy._core
+        sys.modules['numpy.core.multiarray'] = numpy._core.multiarray
+    except Exception:
+        pass
+
 import pickle
 import numpy as np
 import pandas as pd
@@ -91,44 +112,73 @@ FEATURE_NAMES = [
     "restecg", "thalach", "exang", "oldpeak", "slope", "ca", "thal"
 ]
 
+def load_specific_model(model_name):
+    """Loads a specific model pickle with safe error handling."""
+    model_path = f"models/{model_name}.pkl"
+    if os.path.exists(model_path):
+        try:
+            with open(model_path, "rb") as f:
+                return pickle.load(f)
+        except Exception:
+            return None
+    return None
+
 @st.cache_resource
 def load_assets():
-    """Loads scaler, explainer, metadata, and available models."""
+    """Loads scaler, explainer, metadata, and available models safely."""
     assets = {}
     
     # Load Scaler
     if os.path.exists("models/scaler.pkl"):
-        with open("models/scaler.pkl", "rb") as f:
-            assets["scaler"] = pickle.load(f)
+        try:
+            with open("models/scaler.pkl", "rb") as f:
+                assets["scaler"] = pickle.load(f)
+        except Exception:
+            assets["scaler"] = None
             
-    # Load SHAP Explainer
+    # Load SHAP Explainer (with safe fallback for pickle/version incompatibilities)
+    assets["shap_explainer"] = None
     if os.path.exists("models/shap_explainer.pkl"):
-        with open("models/shap_explainer.pkl", "rb") as f:
-            assets["shap_explainer"] = pickle.load(f)
+        try:
+            with open("models/shap_explainer.pkl", "rb") as f:
+                assets["shap_explainer"] = pickle.load(f)
+        except Exception:
+            assets["shap_explainer"] = None
+            
+    # If pre-pickled explainer failed or missing, attempt dynamic TreeExplainer creation
+    if assets["shap_explainer"] is None:
+        try:
+            import shap
+            rf = load_specific_model("Random_Forest")
+            if rf is not None:
+                assets["shap_explainer"] = shap.TreeExplainer(rf)
+        except Exception:
+            assets["shap_explainer"] = None
             
     # Load Benchmark Results
     if os.path.exists("results/model_benchmark_comparison.csv"):
-        assets["benchmark_df"] = pd.read_csv("results/model_benchmark_comparison.csv")
+        try:
+            assets["benchmark_df"] = pd.read_csv("results/model_benchmark_comparison.csv")
+        except Exception:
+            assets["benchmark_df"] = None
         
     # Load Unsupervised Results
     if os.path.exists("results/unsupervised_benchmark_comparison.csv"):
-        assets["unsup_df"] = pd.read_csv("results/unsupervised_benchmark_comparison.csv")
+        try:
+            assets["unsup_df"] = pd.read_csv("results/unsupervised_benchmark_comparison.csv")
+        except Exception:
+            assets["unsup_df"] = None
         
     # Load Dataset
     if os.path.exists("data/heart.csv"):
-        assets["data"] = pd.read_csv("data/heart.csv")
+        try:
+            assets["data"] = pd.read_csv("data/heart.csv")
+        except Exception:
+            assets["data"] = None
         
     return assets
 
 assets = load_assets()
-
-def load_specific_model(model_name):
-    """Loads a specific model pickle."""
-    model_path = f"models/{model_name}.pkl"
-    if os.path.exists(model_path):
-        with open(model_path, "rb") as f:
-            return pickle.load(f)
-    return None
 
 # Sidebar - Application Navigation & Metadata
 with st.sidebar:
@@ -138,9 +188,7 @@ with st.sidebar:
     st.markdown("---")
     
     st.markdown("### 📋 Project Attribution")
-    st.markdown("**Researcher:** Benedict Baah (USN: `241VMTR02058`)")
-    st.markdown("**Research Supervisor & Mentor:** Dr. Kwasi Kwateng")
-    st.markdown("**Faculty Instructor:** Dr. Kavitha R G")
+    st.markdown("**Author / Developer:** Benedict Baah")
     st.markdown("---")
     
     st.markdown("### 📋 Empirical Metadata")
@@ -155,10 +203,10 @@ with st.sidebar:
 st.markdown('<div class="main-header">CardioAI: Machine Learning Research & Application Development</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Comparative Benchmarking of 21 Algorithmic Paradigms, Stratified 5-Fold Cross-Validation, and Explainable AI (SHAP) for Cardiovascular Risk Stratification</div>', unsafe_allow_html=True)
 
-# Researcher & Supervisor Info Card
+# Project Info Card
 st.markdown("""
 <div style="background-color: #1A1D24; padding: 0.85rem 1.2rem; border-radius: 8px; border-left: 4px solid #4CC9F0; margin-bottom: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; font-size: 0.9rem;">
-    <div><strong>Researcher:</strong> Benedict Baah (USN: 241VMTR02058) &nbsp;|&nbsp; <strong>Research Supervisor &amp; Mentor:</strong> Dr. Kwasi Kwateng &nbsp;|&nbsp; <strong>Faculty Instructor:</strong> Dr. Kavitha R G</div>
+    <div><strong>Developer &amp; Researcher:</strong> Benedict Baah &nbsp;|&nbsp; <strong>System:</strong> CardioAI Clinical Decision Support System</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -366,6 +414,8 @@ with tab1:
                         st.markdown(f"• 🔻 **Top Protective Factors:** {neg_str} exerted a protective effect against disease prediction.")
                 except Exception as e:
                     st.info("SHAP visualization rendered via global feature importance table.")
+            else:
+                st.info("ℹ️ Local patient SHAP explainability is available via the global feature importance charts in Tab 3.")
         else:
             st.error("Selected model binary could not be located. Please run train_and_evaluate.py.")
 
@@ -519,6 +569,6 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #8D99AE; font-size: 0.82rem; padding: 1rem 0;">
     <strong>CardioAI: Machine Learning Research and Application Development</strong><br>
-    Researcher: <strong>Benedict Baah</strong> (USN: 241VMTR02058) | Research Supervisor &amp; Mentor: <strong>Dr. Kwasi Kwateng</strong> | Faculty Instructor: <strong>Dr. Kavitha R G</strong> &copy; 2026
+    Developed by <strong>Benedict Baah</strong> &copy; 2026
 </div>
 """, unsafe_allow_html=True)
